@@ -19,72 +19,68 @@
 
 ## Introduction
 
-**nf-core/champlain** is a bioinformatics pipeline that ...
+**The AGTC nf-core/champlain** is a bioinformatics pipeline for preprocessing of sequencing data coming from the Advanced Genome Technologies Core at UVM. It can handle Singular, Geoxm and Nanopore Data.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
-
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
-
+0. Demultiplex or Concatenate samples
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
 
+## Requirements
+
+You need to have an account in the VACC and also install a conda/mamba environment so that 
+
+1. ssh to your VACC account
+2. download and install mamba:
+
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+
+3. create the mamba environment
+mamba create -n env_nf nf-core nextflow
+
+4. make sure that you can see /gpfs1/mbsr_tools
+
+
+## Sample Sheet preparation
+
+All sample sheets need to be csv files
+
+* Singular: just use the regular Singular sample sheet used for the instrument
+* Nanopore: a Samplesheet with two or more columns, BARCODE and DIRECTORYN. For example:
+   BARCODE,DIRECTORY1,DIRECTORY2,...
+   BARCODE01,/netfiles02/mbsr/AGTC_NANOPORE/etc   
+
+
 ## Usage
 
-> [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
-
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
-
-First, prepare a samplesheet with your input data that looks as follows:
-
-`samplesheet.csv`:
-
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-```
-
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
-
-Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
+Go to the VACC and type:
 
 ```bash
-nextflow run nf-core/champlain \
-   -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --outdir <OUTDIR>
+./champlain.R --instrument TYPE --samplesheet SampleSheet --outputDirectory outputdirectory --directories directories[for Singular]
 ```
 
-> [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
-> see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+You can do ./champlain.R --help for help
 
-For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/champlain/usage) and the [parameter documentation](https://nf-co.re/champlain/parameters).
+* Samplesheet: As described above
+* Instrument Type: singular, nanopore or geomx
+* outputDirectory: where you want the output to go
+* datadirectories (only needed for singular): where the fastq data is located.
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/champlain/results) tab on the nf-core website pipeline page.
-For more details about the output files and reports, please refer to the
-[output documentation](https://nf-co.re/champlain/output).
+The output would go in the output directory as follows:
+
+* demux: demultiplexed fastq (under construction)
+* cat: Concatenated data
+* fastqc: FASTQC files
+* multiqc: MULTIQC output
 
 ## Credits
 
-nf-core/champlain was originally written by Ramiro Barrantes Reynolds.
+nf-core/champlain was originally written by Ramiro Barrantes Reynolds, Ph.D.
 
-We thank the following people for their extensive assistance in the development of this pipeline:
+We thank the following people for their assistance in the development of this pipeline: Kirsten Tracy, Princess Rodriguez and Stacia Richard.
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
 
 ## Contributions and Support
 
@@ -94,10 +90,11 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use nf-core/champlain for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
+If you use nf-core/champlain for your analysis, please cite it using the following doi: 
 
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
+"The next-generation sequencing was performed in the Vermont Integrative Genomics Resource Massively Parallel Sequencing Facility and was supported by the University of Vermont Cancer Center, Lake Champlain Cancer Research Organization, UVM College of Agriculture and Life Sciences, and the UVM Larner College of Medicine."
+
+"Sequencing analysis and other bioinformatics services were provided by the Vermont Integrative Genomics Resource DNA Facility and supported by the University of Vermont Larner College of Medicine."
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
