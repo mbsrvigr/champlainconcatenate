@@ -21,34 +21,65 @@
 
 **The AGTC nf-core/champlain** is a bioinformatics pipeline for preprocessing of sequencing data coming from the Advanced Genome Technologies Core at UVM. It can handle Singular, Geoxm and Nanopore Data.
 
-0. Concatenate samples if necessary
+0. Demultiplex or Concatenate samples
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
 
+## Requirements
+
+You need to have an account in the VACC and also install a conda/mamba environment so that 
+
+1. ssh to your VACC account
+2. download and install mamba:
+
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+
+3. create the mamba environment
+mamba create -n env_nf nf-core nextflow
+
+4. make sure that you can see /gpfs1/mbsr_tools
+
+
+## Sample Sheet preparation
+
+All sample sheets need to be csv files
+
+* Singular: just use the regular Singular sample sheet used for the instrument
+* Nanopore: a Samplesheet with two or more columns, BARCODE and DIRECTORYN. For example:
+   BARCODE,DIRECTORY1,DIRECTORY2,...
+   BARCODE01,/netfiles02/mbsr/AGTC_NANOPORE/etc   
+
+
 ## Usage
 
-Go to the VACC, make sure to have nextflow installed and run:
+Go to the VACC and type:
 
 ```bash
-sbatch runChamplain.sh samplesheet.csv instrumentType outputDirectory datadirectories
+./champlain.R --instrument TYPE --samplesheet SampleSheet --outputDirectory outputdirectory --directories directories[for Singular]
 ```
 
-* Samplesheet: For singular data, the samplesheet would be regular Singular sample sheet.
+You can do ./champlain.R --help for help
+
+* Samplesheet: As described above
 * Instrument Type: singular, nanopore or geomx
 * outputDirectory: where you want the output to go
-* datadirectories: where the fastq data is located
+* datadirectories (only needed for singular): where the fastq data is located.
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/champlain/results) tab on the nf-core website pipeline page.
-For more details about the output files and reports, please refer to the
-[output documentation](https://nf-co.re/champlain/output).
+The output would go in the output directory as follows:
+
+* demux: demultiplexed fastq (under construction)
+* cat: Concatenated data
+* fastqc: FASTQC files
+* multiqc: MULTIQC output
 
 ## Credits
 
 nf-core/champlain was originally written by Ramiro Barrantes Reynolds, Ph.D.
 
-We thank the following people for their extensive assistance in the development of this pipeline: Kirsten Tracy, Princess Rodriguez
+We thank the following people for their assistance in the development of this pipeline: Kirsten Tracy, Princess Rodriguez and Stacia Richard.
 
 
 ## Contributions and Support
