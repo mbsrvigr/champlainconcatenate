@@ -6,6 +6,7 @@
 
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { CAT_FASTQ              } from '../modules/local/concatenation'                 
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -27,12 +28,17 @@ workflow CHAMPLAIN {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    //
-    // MODULE: Run FastQC
-    //
-    FASTQC (
-        ch_samplesheet
-    )
+    ch_samplesheet
+    .map { sample_ID,fastqList ->
+        def files = fastqList[0].split(',')
+        [sample_ID, tuple(files)]
+    }
+    .set{ch_samples}
+
+    CAT_FASTQ (ch_samples)
+
+    FASTQC (CAT_FASTQ.out.reads)
+
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
     ch_versions = ch_versions.mix(FASTQC.out.versions.first())
 
