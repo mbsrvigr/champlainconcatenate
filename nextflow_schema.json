@@ -200,7 +200,8 @@
                 "multiqc_methods_description": {
                     "type": "string",
                     "description": "Custom MultiQC yaml file containing HTML including a methods description.",
-                    "fa_icon": "fas fa-cog"
+                    "fa_icon": "fas fa-cog",
+                    "hidden": true
                 },
                 "validate_params": {
                     "type": "boolean",
@@ -255,8 +256,9 @@
         }
     ],
     "properties": {
-        "new_param_1": {
-            "type": "string"
+        "multiqc_title": {
+            "type": "string",
+            "hidden": true
         }
     }
 }
