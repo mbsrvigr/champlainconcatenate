@@ -10,13 +10,14 @@ parser <- OptionParser()
 option_list <- list(
    make_option(c("-i", "--instrument"), help="singular, nanopore, geomx, or general"),
    make_option(c("-s", "--samplesheet"), help="sample sheet as described on the website"),
-   make_option(c("-o", "--outputDirectory"), help="directory where the results will go"),
+   make_option(c("-o", "--outputSampleSheet"), help="output sample sheet"),
    make_option(c("-d", "--directories"), help="For Singular only: Directories where the data is located"))
 
 opt <- parse_args(OptionParser(option_list=option_list))
 type <- toupper(opt$instrument)
 sampleSheet <- opt$samplesheet
-outputDirectory <- opt$outputDirectory
+outputSampleSheet <- opt$outputSampleSheet
+directories <- opt$directories
 
 ### FUNCTIONS
 
@@ -160,8 +161,8 @@ createGeomxConcatSamplesheets <- function(sampleSheet,outputFilename) {
   }
 }
 
-createSingularSamplesheets <- function(sampleSheet,directories,outputFilename) {
-  tmp <- read.csv(sampleSheet)
+createSingularSamplesheets <- function(samplesheet,directories,outputFilename) {
+  tmp <- read.csv(samplesheet)
   idx <- which(tmp[,1]=="Sample_ID")
   data <- tmp[(idx+1):nrow(tmp),]
   colnames(data) <- tmp[idx,]
@@ -191,28 +192,20 @@ createSingularSamplesheets <- function(sampleSheet,directories,outputFilename) {
     if (length(I1)>0) {
       r <- rbind(r,data.frame(id=paste0(sampleID,"_I1"),fastqList=paste0('"',paste(I1,collapse=","),'"')))
     }
+    r
   }))
   write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep=",")
 }
 
-
-
-
 ### RUN
 
-
-samplesheetBasename <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(sampleSheet))
-dir.create(file.path(outputDirectory), showWarnings = FALSE)
-
 if (type=="SINGULAR") {
-  directories <- strsplit(opt$directories,",")[[1]]
+  directories <- strsplit(directories,",")[[1]]
 } else {
   directories <- NA
 }
-outputSampleSheet <- paste0(outputDirectory,"/",samplesheetBasename,".csv")
-workDirectory <- paste0("./deleteme/",samplesheetBasename)
 
-data <- validateSampleSheet(sampleSheet,type,directories)
+validateSampleSheet(sampleSheet,type,directories)
 
 print(paste0("Instrument: ",type))
 if (type=="GEOMX") {
@@ -229,5 +222,5 @@ if (type=="GENERAL") {
   concatenationSampleSheets <- createGeneralSamplesheets(sampleSheet,outputSampleSheet)
 } 
 
-cmd <- paste0("module load singularity/3.7.1;source ~/.bashrc;mamba activate env_nf;export NXF_SINGULARITY_CACHEDIR=/gpfs1/mbsr_tools/NXF_SINGULARITY_CACHEDIR;nextflow run main.nf -profile singularity --input ",outputSampleSheet," --outdir ",outputDirectory," -work-dir ",workDirectory)
-system(cmd)
+#cmd <- paste0("module load singularity/3.7.1;source ~/.bashrc;mamba activate env_nf;export NXF_SINGULARITY_CACHEDIR=/gpfs1/mbsr_tools/NXF_SINGULARITY_CACHEDIR;nextflow run main.nf -profile singularity --input ",outputSampleSheet," --outdir ",outputDirectory," -work-dir ",workDirectory)
+#system(cmd)
