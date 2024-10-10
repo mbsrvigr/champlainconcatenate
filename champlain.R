@@ -78,7 +78,6 @@ validateSampleSheet <- function(sampleSheet,type, directories) {
   } else if (type=="SINGULAR") {
     check_dirs(directories)
   }
-  data
 }
  
 createNanoporeSamplesheets <- function(data,outputFilename) {
