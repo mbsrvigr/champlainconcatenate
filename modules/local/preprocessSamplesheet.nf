@@ -5,7 +5,7 @@ process PREPROCESS_SAMPLESHEET {
     tuple val(instrument), val(sampleSheetFilename), val(directories)
 
     output:
-    tuple path("samplesheet.csv"), emit: reads
+    path("samplesheet.csv"), emit: samplesheet
 
     when:
     task.ext.when == null || task.ext.when
