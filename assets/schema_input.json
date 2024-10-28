@@ -7,22 +7,26 @@
     "items": {
         "type": "object",
         "properties": {
-            "id": {
+            "instrument": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
+                "errorMessage": "Instrument must be one Singular, Nanopore, Geomx or General",
+		"enum": ["Singular", "Nanopore", "Geomx","General"]
+                "meta": ["instrument"]
             },
-            "fastqList": {
+            "sampleSheetFilename": {
                 "type": "string",
-                "format": "string",
-                "errorMessage": "FastQ files for reads must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'",
+                "format": "string"
+            },
+	    "directories": {
+                "type": "string",
+                "format": "string"
             },
             "ini": {
                 "type": "string",
                 "format": "file-path",
             }
         },
-        "required": ["id", "fastqList"]
+        "required": ["instrument", "sampleSheetFilename"]
     }
 }

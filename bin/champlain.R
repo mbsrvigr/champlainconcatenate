@@ -53,7 +53,7 @@ validateSampleSheet <- function(sampleSheet,type, directories) {
     if (sum(duplicated(samples))>0) {
       stop("Duplicated samples!")
     }
-    
+
     if (type=="NANOPORE") {
       header1 <- "BARCODE"
     } else {
@@ -74,12 +74,12 @@ validateSampleSheet <- function(sampleSheet,type, directories) {
       check_dirs(dirs)
     } else {
       check_files(dirs)
-    } 
+    }
   } else if (type=="SINGULAR") {
     check_dirs(directories)
   }
 }
- 
+
 createNanoporeSamplesheets <- function(data,outputFilename) {
   df <- do.call(rbind,lapply(1:nrow(data), function(n) {
     row <- data[n,]
@@ -93,7 +93,7 @@ createNanoporeSamplesheets <- function(data,outputFilename) {
       fastqs <- list.files(dir,pattern=pattern,full.names=TRUE)
       fastqList <- c(fastqList,fastqs)
     }
-    data.frame(id=barcode, fastqList=paste0('"',paste(fastqList,collapse=","),'"')) 
+    data.frame(id=barcode, fastqList=paste0('"',paste(fastqList,collapse=","),'"'))
   }))
   write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep=",")
 }
@@ -105,9 +105,10 @@ createGeneralSamplesheets <- function(sampleSheet,outputFilename) {
     sample <- row[,1]
     files <- as.character(row[,2:ncol(row)])
     fastqList <- files[files!=""]
-    data.frame(id=sample, fastqList=paste0('"',paste(fastqList,collapse=","),'"')) 
+#    data.frame(id=sample, fastqList=paste0('"',paste(fastqList,collapse=","),'"'))
+    data.frame(id=sample, fastqList=paste0(paste(fastqList,collapse=",")))    
   }))
-  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep=",")
+  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep="|")
 }
 
 
@@ -136,7 +137,7 @@ createGeomxConcatSamplesheets <- function(sampleSheet,outputFilename) {
     if (!file.exists(iniOutput)) {
       dir.create(iniOutput)
     }
-    
+
     aois <- names(ini$AOI_List)
     df<-do.call(rbind,lapply(1:length(aois),function(j) {
       aoi <- aois[j]
@@ -151,7 +152,7 @@ createGeomxConcatSamplesheets <- function(sampleSheet,outputFilename) {
       }
       rbind(data.frame(ID=paste0(aoi,"_S111_L001_R1_001"),fastq=paste(R1,collapse=",")),
             data.frame(ID=paste0(aoi,"_S111_L001_R2_001"),fastq=paste(R2,collapse=",")))
-      
+
     }))
     sampleSheet <- paste0(iniOutput,"/",basename(iniOutput),"_sampleSheet.csv")
     write.table(df,file=sampleSheet,row.names=FALSE,quote=FALSE,col.names=FALSE,sep=",")
@@ -193,7 +194,7 @@ createSingularSamplesheets <- function(samplesheet,directories,outputFilename) {
     }
     r
   }))
-  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep=",")
+  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep="|")
 }
 
 ### RUN
@@ -209,17 +210,17 @@ validateSampleSheet(sampleSheet,type,directories)
 print(paste0("Instrument: ",type))
 if (type=="GEOMX") {
   concatenationSampleSheets <- createGeomxConcatSamplesheets(sampleSheet,outputSampleSheet)
-  cmd <- paste0("sbatch runConcatenation.sh ",sampleSheet," ",iniOutput)
+  #cmd <- paste0("sbatch runConcatenation.sh ",sampleSheet," ",iniOutput)
 }
 if (type=="NANOPORE") {
   concatenationSampleSheets <- createNanoporeSamplesheets(data,outputSampleSheet)
 }
 if (type=="SINGULAR") {
   concatenationSampleSheets <- createSingularSamplesheets(sampleSheet,directories,outputSampleSheet)
-} 
+}
 if (type=="GENERAL") {
   concatenationSampleSheets <- createGeneralSamplesheets(sampleSheet,outputSampleSheet)
-} 
+}
 
 #cmd <- paste0("module load singularity/3.7.1;source ~/.bashrc;mamba activate env_nf;export NXF_SINGULARITY_CACHEDIR=/gpfs1/mbsr_tools/NXF_SINGULARITY_CACHEDIR;nextflow run main.nf -profile singularity --input ",outputSampleSheet," --outdir ",outputDirectory," -work-dir ",workDirectory)
 #system(cmd)
