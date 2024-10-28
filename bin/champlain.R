@@ -105,9 +105,10 @@ createGeneralSamplesheets <- function(sampleSheet,outputFilename) {
     sample <- row[,1]
     files <- as.character(row[,2:ncol(row)])
     fastqList <- files[files!=""]
-    data.frame(id=sample, fastqList=paste0('"',paste(fastqList,collapse=","),'"'))
+#    data.frame(id=sample, fastqList=paste0('"',paste(fastqList,collapse=","),'"'))
+    data.frame(id=sample, fastqList=paste0(paste(fastqList,collapse=",")))    
   }))
-  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep=",")
+  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep="|")
 }
 
 
@@ -193,7 +194,7 @@ createSingularSamplesheets <- function(samplesheet,directories,outputFilename) {
     }
     r
   }))
-  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep=",")
+  write.table(df,file=outputFilename,row.names=FALSE,quote=FALSE,col.names=TRUE,sep="|")
 }
 
 ### RUN
