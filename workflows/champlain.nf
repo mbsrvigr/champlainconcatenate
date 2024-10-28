@@ -6,11 +6,13 @@
 
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { CAT_FASTQ              } from '../modules/local/concatenation'                 
+include { CAT_FASTQ              } from '../modules/local/concatenation'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_champlain_pipeline'
+include { PREPROCESS_SAMPLESHEET } from '../modules/local/preprocessSamplesheet'
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,16 +23,19 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_cham
 workflow CHAMPLAIN {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    instrument
+    samplesheetFile
+    directories
 
     main:
 
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    PREPARE_SAMPLESHEET()
+    ch_sampleSheetFilename=PREPROCESS_SAMPLESHEET([instrument, samplesheetFile, directories])
 
-    ch_samplesheet
+    ch_sampleSheetFilename
+    .splitCsv()
     .map { sample_ID,fastqList ->
         def files = fastqList[0].split(',')
         [sample_ID, tuple(files)]
