@@ -35,10 +35,10 @@ workflow CHAMPLAIN {
     ch_sampleSheetFilename=PREPROCESS_SAMPLESHEET([instrument, samplesheetFile, directories])
 
     ch_sampleSheetFilename
-    .splitCsv()
-    .map { sample_ID,fastqList ->
-        def files = fastqList[0].split(',')
-        [sample_ID, tuple(files)]
+    .splitCsv(header: true, quote: "", sep: "|")
+    .map { row ->
+        def files = row.fastqList.split(',')
+        [[id:row.id], tuple(files)]
     }
     .set{ch_samples}
 
