@@ -28,6 +28,8 @@ workflow CHAMPLAIN {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
+    PREPARE_SAMPLESHEET()
+
     ch_samplesheet
     .map { sample_ID,fastqList ->
         def files = fastqList[0].split(',')
