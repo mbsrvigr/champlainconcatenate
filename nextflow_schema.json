@@ -14,11 +14,7 @@
             "properties": {
                 "input": {
 		    "type": "string",
-		    "mimetype": 'text/csv',
-                    "pattern": '^\\S+\\.(csv|tsv|txt)$',
-		    "schema": 'assets/schema_input.json',
-		    "description": 'Sample Sheet.',
-		    "format": "file-path"
+                    "format": "string"
                 },
                 "instrument": {
                     "type": "string",
