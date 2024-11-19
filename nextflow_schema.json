@@ -14,7 +14,7 @@
             "properties": {
                 "input": {
 		    "type": "string",
-                    "format": "file-path",
+                    "format": "string",
 		    "mimetype": 'text/csv',
                     "pattern": '^\\S+\\.(csv|tsv|txt)$'
                 },
