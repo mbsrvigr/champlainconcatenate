@@ -41,7 +41,9 @@ include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_cham
 workflow NFCORE_CHAMPLAIN {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    instrument
+    samplesheetFile
+    directories
 
     main:
 
@@ -49,7 +51,7 @@ workflow NFCORE_CHAMPLAIN {
     // WORKFLOW: Run pipeline
     //
     CHAMPLAIN (
-        samplesheet
+        instrument,samplesheetFile,directories
     )
 
     emit:
@@ -83,7 +85,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_CHAMPLAIN (
-        PIPELINE_INITIALISATION.out.samplesheet
+        params.instrument, params.input, params.directories
     )
 
     //
