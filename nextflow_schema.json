@@ -10,11 +10,15 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["instrument","outdir"],
+            "required": ["input","instrument","outdir"],
             "properties": {
                 "input": {
-                    "type": "string",
-                    "format": "string"
+		    "type": "string",
+		    "mimetype": 'text/csv',
+                    "pattern": '^\\S+\\.(csv|tsv|txt)$',
+		    "schema": 'assets/schema_input.json',
+		    "description": 'Sample Sheet.',
+		    "format": "file-path"
                 },
                 "instrument": {
                     "type": "string",
