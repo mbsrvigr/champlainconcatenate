@@ -14,7 +14,7 @@
             "properties": {
                 "input": {
 		    "type": "string",
-                    "format": "string"
+		    "format": "file-path"
                 },
                 "instrument": {
                     "type": "string",
