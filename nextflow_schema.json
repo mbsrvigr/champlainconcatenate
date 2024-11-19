@@ -15,7 +15,8 @@
                 "input": {
 		    "type": "string",
 		    "format": "file-path",
-                    "exists": true
+                    "exists": true,
+                    "schema": "assets/schema_input.json"
                 },
                 "instrument": {
                     "type": "string",
