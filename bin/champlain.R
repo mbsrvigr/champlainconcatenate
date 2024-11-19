@@ -184,8 +184,11 @@ createSingularSamplesheets <- function(samplesheet,directories,outputFilename) {
       filesI1 <- list.files(path=dir,pattern=paste0(sampleID,".*_I1_.*.fastq.gz"),full.names=TRUE)
       I1 <- c(I1,filesI1)
     }
-    r<-rbind(data.frame(id=paste0(sampleID,"_R1"),fastqList=paste0('"',paste(R1,collapse=","),'"')),
-          data.frame(id=paste0(sampleID,"_R2"),fastqList=paste0('"',paste(R2,collapse=","),'"')))
+    #r<-rbind(data.frame(id=paste0(sampleID,"_R1"),fastqList=paste0('"',paste(R1,collapse=","),'"')),
+    #      data.frame(id=paste0(sampleID,"_R2"),fastqList=paste0('"',paste(R2,collapse=","),'"')))
+    r<-rbind(data.frame(id=paste0(sampleID,"_R1"),fastqList=paste(R1,collapse=",")),
+          data.frame(id=paste0(sampleID,"_R2"),fastqList=paste(R2,collapse=",")))
+
     if (length(R3)>0) {
       r <- rbind(r,data.frame(id=paste0(sampleID,"_R3"),fastqList=paste0('"',paste(R3,collapse=","),'"')))
     }
