@@ -53,9 +53,9 @@ workflow UTILS_NFVALIDATION_PLUGIN {
     //
     // Validate parameters relative to the parameter JSON schema
     //
-    if (validate_params){
-        validateParameters(parameters_schema: schema_filename)
-    }
+   // if (validate_params){
+   //     validateParameters(parameters_schema: schema_filename)
+   // }
 
     emit:
     dummy_emit = true

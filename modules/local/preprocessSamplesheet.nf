@@ -2,7 +2,7 @@ process PREPROCESS_SAMPLESHEET {
     label 'process_single'
 
     input:
-    tuple val(instrument), val(sampleSheetFilename), val(directories)
+    tuple val(instrument), path(sampleSheetFilename), val(directories)
 
     output:
     path("samplesheet.csv"), emit: samplesheet
