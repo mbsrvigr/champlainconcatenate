@@ -13,10 +13,8 @@
             "required": ["samplesheetFile","instrument","outdir"],
             "properties": {
                 "input": {
-		    "type": "string",
-		    "format": "file-path",
-                    "exists": true,
-                    "schema": "assets/schema_input.json"
+                    "type": "string",
+                    "format": "string"
                 },
 		"samplesheetFile": {
                     "type": "string",
