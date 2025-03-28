@@ -14,7 +14,7 @@
 		"enum": ["Singular", "Nanopore", "Geomx","General"]
                 "meta": ["instrument"]
             },
-            "sampleSheetFilename": {
+            "samplesheetFile": {
                 "type": "string",
                 "format": "string"
             },
@@ -27,6 +27,6 @@
                 "format": "file-path",
             }
         },
-        "required": ["instrument", "sampleSheetFilename"]
+        "required": ["instrument", "samplesheetFile"]
     }
 }
