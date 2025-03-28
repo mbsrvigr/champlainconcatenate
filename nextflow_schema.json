@@ -12,9 +12,12 @@
             "description": "Define where the pipeline should find input data and save output data.",
             "required": ["samplesheetFile","instrument","outdir"],
             "properties": {
-            		"samplesheetFile": {
+                "samplesheetFile": {
                     "type": "string",
-		                "format": "file-path"
+		    "format": "file-path",
+		    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+
                 },
                 "instrument": {
                     "type": "string",
