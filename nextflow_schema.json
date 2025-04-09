@@ -17,7 +17,12 @@
             ],
             "properties": {
                 "samplesheetFile": {
-                    "type": "string"
+                    "type": "string",
+		    "format": "file-path",
+		    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+
+>>>>>>> 3decfa473b66d79f598c4876f7337a8b287568c0
                 },
                 "instrument": {
                     "type": "string",
