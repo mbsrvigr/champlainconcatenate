@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/champlain/master/nextflow_schema.json",
     "title": "nf-core/champlain pipeline parameters",
     "description": "pre-processing and QC (including concatenation) of AGTC sequencing data: Singular, Geomx and Nanopore",
@@ -10,22 +10,26 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["samplesheetFile","instrument","outdir"],
+            "required": [
+                "outdir",
+                "samplesheetFile",
+                "instrument"
+            ],
             "properties": {
-            		"samplesheetFile": {
-                    "type": "string",
-		                "format": "file-path"
+                "samplesheetFile": {
+                    "type": "string"
                 },
                 "instrument": {
                     "type": "string",
-                    "pattern": "^\\S+$",
-                    "errorMessage": "Instrument must be one Singular, Nanopore, Geomx or General",
-            "enum": ["Singular", "Nanopore", "Geomx","General"],
-                    "meta": ["instrument"]
+                    "enum": [
+                        "SINGULAR",
+                        "NANOPORE",
+                        "GEOMX",
+                        "GENERAL"
+                    ]
                 },
                 "directories": {
-                    "type": "string",
-                    "format": "string"
+                    "type": "string"
                 },
                 "outdir": {
                     "type": "string",
@@ -45,7 +49,7 @@
     },
     "allOf": [
         {
-            "$ref": "#/definitions/input_output_options"
+            "$ref": "#/$defs/input_output_options"
         }
     ],
     "properties": {
