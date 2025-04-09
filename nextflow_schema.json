@@ -18,9 +18,10 @@
             "properties": {
                 "samplesheetFile": {
                     "type": "string",
-		    "format": "file-path",
-		    "mimetype": "text/csv",
+            		    "format": "file-path",
+		                "mimetype": "text/csv",
                     "pattern": "^\\S+\\.csv$",
+
                 },
                 "instrument": {
                     "type": "string",
