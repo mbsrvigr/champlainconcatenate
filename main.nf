@@ -46,8 +46,7 @@ workflow NFCORE_CHAMPLAIN {
     directories
 
     main:
-
-    //
+     //
     // WORKFLOW: Run pipeline
     //
     CHAMPLAIN (
@@ -85,7 +84,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_CHAMPLAIN (
-        params.instrument, params.input, params.directories
+        params.instrument, file(params.samplesheetFile), params.directories
     )
 
     //
