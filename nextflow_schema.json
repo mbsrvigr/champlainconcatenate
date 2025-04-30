@@ -12,6 +12,25 @@
             "description": "Define where the pipeline should find input data and save output data.",
             "required": ["outdir"],
             "properties": {
+                "samplesheetFile": {
+                    "type": "string",
+            		    "format": "file-path",
+		                "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+
+                },
+                "instrument": {
+                    "type": "string",
+                    "enum": [
+                        "SINGULAR",
+                        "NANOPORE",
+                        "GEOMX",
+                        "GENERAL"
+                    ]
+                },
+                "directories": {
+                    "type": "string"
+                },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
