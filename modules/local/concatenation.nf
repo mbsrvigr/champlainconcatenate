@@ -1,4 +1,5 @@
 process CAT_FASTQ {
+    label 'process_low'
     tag "$meta.id"
 
     conda "${moduleDir}/environment.yml"
