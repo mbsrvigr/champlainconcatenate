@@ -32,7 +32,7 @@ workflow CHAMPLAIN {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    ch_sampleSheetFilename=PREPROCESS_SAMPLESHEET([instrument, samplesheetFile, directories])
+    ch_sampleSheetFilename=PREPROCESS_SAMPLESHEET([instrument, file(samplesheetFile), directories])
 
     ch_sampleSheetFilename
     .splitCsv(header: true, quote: "", sep: "|")
